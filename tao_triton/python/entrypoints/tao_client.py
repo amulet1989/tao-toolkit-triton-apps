@@ -42,6 +42,8 @@ import tritonclient.http as httpclient
 from tritonclient.utils import InferenceServerException
 from tritonclient.utils import triton_to_np_dtype
 
+import sys
+sys.path.append("/home/minigo/Desktop/tao_inference_run/tao-toolkit-triton-apps")
 from tao_triton.python.types import Frame, UserData
 from tao_triton.python.postprocessing.detectnet_processor import DetectNetPostprocessor
 from tao_triton.python.postprocessing.classification_postprocessor import ClassificationPostprocessor

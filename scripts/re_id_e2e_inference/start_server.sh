@@ -1,5 +1,6 @@
 #!/bin/bash
 
+export NGC_API_KEY=azhqYnBnaGFwb2pvaHA5Z2ZmODloNjZwdXY6MGNhOWYxZDItODQxNC00NWI5LWIxOWMtYTE5OThkNjJiZjI5
 function check_wget_installed {
     if ! command -v wget > /dev/null; then
         echo "Wget not found. Please run sudo apt-get install wget"
@@ -17,6 +18,7 @@ function check_ngc_cli_installation {
 }
 
 get_ngc_key_from_environment() {
+    
     # first check the global NGC_API_KEY environment variable.
     local ngc_key=$NGC_API_KEY
     # if env variable was not set, and a ~/.ngc/config exists
@@ -60,10 +62,10 @@ source $config_path
 docker build -f "${tao_triton_root}/docker/Dockerfile" \
              -t ${tao_triton_server_docker}:${tao_triton_server_tag} ${tao_triton_root}
 
-mkdir -p ${default_model_download_path} && cd ${default_model_download_path}
-rm -rf ${default_model_download_path}/re_id_model
-mkdir ${default_model_download_path}/re_id_model
-wget --no-check-certificate ${ngc_re_identification} -O ${default_model_download_path}/re_id_model/resnet50_market1501.etlt
+# mkdir -p ${default_model_download_path} && cd ${default_model_download_path}
+# rm -rf ${default_model_download_path}/re_id_model
+#mkdir ${default_model_download_path}/re_id_model
+#wget --no-check-certificate ${ngc_re_identification} -O ${default_model_download_path}/re_id_model/resnet50_market1501.etlt
 
 # Run the server container.
 echo "Running the server on ${gpu_id}"
@@ -78,3 +80,6 @@ docker run -it --rm -v ${tao_triton_root}/model_repository:/model_repository \
            -e CUDA_VISIBLE_DEVICES=$gpu_id \
            ${tao_triton_server_docker}:${tao_triton_server_tag} \
            /tao_triton/re_id_e2e_inference/download_and_convert.sh
+
+
+sudo chown $USER:$USER -R .
